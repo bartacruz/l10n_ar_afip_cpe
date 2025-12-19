@@ -25,7 +25,8 @@ class ResPartner(models.Model):
                         location = self.env["res.partner"].create({
                             'parent_id': record.id,
                             'name': location_name,
-                            'tms_location': True
+                            'tms_location': True,
+                            'is_company': True,
                         })
                     location.name = location_name
                     location.cpe_location = code
