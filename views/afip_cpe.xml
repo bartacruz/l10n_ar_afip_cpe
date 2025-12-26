@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="cpe_view_tree" model="ir.ui.view">
+        <field name="name">afip.cpe.view.tree</field>
+        <field name="model">afip.cpe</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" />
+                <field name="order_number" />
+                <field name="origin_number" />
+                <field name="origin_partner_id" />
+                <field name="origin_id" />
+                <field name="destination_id" />
+                <field name="destination_partner_id" />
+                <field name="drivers" />
+                <field name="license_plates" />
+                <field name="status" />
+                
+
+            </tree>
+        </field>
+    </record>
+    <record id="cpe_view_form" model="ir.ui.view">
+        <field name="name">afip.cpe.view.form</field>
+        <field name="model">afip.cpe</field>
+        <field name="arch" type="xml">
+            <form string="Carta de Porte Granario">
+                <header>
+                    <button
+                        name="action_update_cpe"
+                        type="object"
+                        string="Actualizar"
+                        class="btn btn-primary text-uppercase"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Name" />
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="customer_id" />
+                        <group>
+                            <field name="origin_partner_id" />
+                            <field name="origin_id" />
+                            <field name="origin_number" />
+                            <field name="destination_partner_id" />
+                            <field name="destination_id" />
+                        </group>
+                        <group>
+                            <field name="status" />
+                            <field name="emmited_date" />
+                            <field name="status_date" />
+                            <field name="due_date" />
+                            <field name="order_number" />
+                        </group>
+                        <label for="observations" class="oe_edit_only" string="Observaciones" />
+                        <field string="Observaciones" name="observations" />
+                    </group>
+                    <notebook>
+                        <page name="transports" string="Transports">
+                            <field name="transport_ids">
+                                <tree>
+                                    <field name="start_date" />
+                                    <field name="driver_id" />
+                                    <field name="vehicle_id" />
+                                    <field name="trailer_id" />
+                                    <field name="distance" />
+                                    <field name="price" />
+
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_afip_cpe_view" model="ir.actions.act_window">
+        <field name="name">CPE</field>
+        <field name="res_model">afip.cpe</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

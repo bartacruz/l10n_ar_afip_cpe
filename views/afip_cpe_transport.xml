@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="cpe_transport_view_tree" model="ir.ui.view">
+        <field name="name">afip.cpe.transport.view.tree</field>
+        <field name="model">afip.cpe.transport</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="customer_id" />
+                <field name="start_date" />
+                <field name="driver_id" />
+                <field name="vehicle_id" />
+                <field name="trailer_id" />
+                <field name="distance" />
+                <field name="price" />
+
+            </tree>
+        </field>
+    </record>
+</odoo>

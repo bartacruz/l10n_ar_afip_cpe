@@ -13,7 +13,9 @@ class ResPartner(models.Model):
             
             for record in self:
                 ret = ws.ConsultarLocalidadesProductor(cuit_productor=record.vat, sep=None)
-                
+                print(ws.xml_request)
+                print("===============================")
+                print(ws.xml_response)
                 for loc in ret:
                     code = loc.get('codigo')
                     location = self.env["res.partner"].search([('cpe_location','=',code)],limit=1)
