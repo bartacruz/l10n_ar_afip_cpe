@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="afip_state_view_tree" model="ir.ui.view">
+        <field name="name">afip.state.view.tree</field>
+        <field name="model">afip.state</field>
+        <field name="arch" type="xml">
+            <tree string="AFIP States">
+                <field name="id" />
+                <field name="afip_code" />
+                <field name="afip_name" />
+                <field name="state_id" />
+            </tree>
+        </field>
+    </record>
+    <record id="afip_locality_view_tree" model="ir.ui.view">
+        <field name="name">afip.locality.view.tree</field>
+        <field name="model">afip.locality</field>
+        <field name="arch" type="xml">
+            <tree string="AFIP States">
+                <field name="id" />
+                <field name="name" />
+                <field name="afip_code" />
+                <field name="state_id" />
+                <field name="afip_state_id" />
+            </tree>
+        </field>
+    </record>
+    <record id="action_afip_states_view" model="ir.actions.act_window">
+        <field name="name">AFIP States</field>
+        <field name="res_model">afip.state</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="action_afip_locality_view" model="ir.actions.act_window">
+        <field name="name">AFIP Locality</field>
+        <field name="res_model">afip.locality</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

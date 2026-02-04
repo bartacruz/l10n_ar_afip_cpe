@@ -7,7 +7,13 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='category_id']" position="after">
-                <field name="cpe_location" />
+                <field name="cpe_location" invisible="not cpe_location"/>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']//sheet//field[@name='email']" position="after">
+                <field name="cpe_location" invisible="not cpe_location or cpe_location==0"/>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']//div[@t-if='record.mobile.raw_value']" position="after">
+                <div t-if="record.cpe_location.value">Location: <t t-esc="record.cpe_location.value"/></div>
             </xpath>
         </field>
     </record>
@@ -21,6 +27,17 @@
         <field name="state">code</field>
         <field name="code">
             action = record.action_cpe_locations_lookup()
+        </field>
+    </record>
+    <record id="ir_action_server_action_cpe_plantas_lookup" model="ir.actions.server">
+        <field name="name">CPE Plantas Lookup</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">form</field>
+        <field name="groups_id" eval="[Command.link(ref('base.group_system'))]" />
+        <field name="state">code</field>
+        <field name="code">
+            action = record.action_cpe_plantas_lookup()
         </field>
     </record>
 </odoo>

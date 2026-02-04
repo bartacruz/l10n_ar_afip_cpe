@@ -32,29 +32,44 @@
                         string="Actualizar"
                         class="btn btn-primary text-uppercase"
                     />
+                    <field
+                        name="status"
+                        widget="statusbar"
+                        options="{'clickable':True}"
+                    />
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only" string="Name" />
                         <h1>
                             <field name="name" />
                         </h1>
                     </div>
                     <group>
-                        <field name="customer_id" />
+                        
                         <group>
-                            <field name="origin_partner_id" />
-                            <field name="origin_id" />
-                            <field name="origin_number" />
-                            <field name="destination_partner_id" />
-                            <field name="destination_id" />
+                            <field name="customer_id" string="Cliente"/>    
+                            <field name="origin_partner_id" string="Titular"/>
+                            <field name="origin_code" string="Planta" invisible="origin_code == 0"/>
+                            <field name="origin_id" invisible="not origin_id" readonly="True" widget="res_partner_many2one" context="{'show_address': 1, 'show_vat': False}"/>
+                            <field name="origin_city" string="Ciudad" invisible="origin_id" />
+                            <field name="origin_state_id" string="Provincia" invisible="origin_id" />
+                            
+                            <field name="destination_partner_id" string="Destinatario"/>
+                            <field name="destination_code" string="Planta" invisible="destination_code == 0"/>
+                            <field name="destination_id" invisible="not destination_id" readonly="True" widget="res_partner_many2one" context="{'show_address': 1, 'show_vat': False}"/>
+                            <field name="destination_city" string="Ciudad" invisible="destination_id" />
+                            <field name="destination_state_id" string="Provincia" invisible="destination_id" />
+                            
                         </group>
                         <group>
-                            <field name="status" />
+                            <field name="ctg_number" />
+                            <field name="origin_number" />
+                            <field name="order_number" />
+                            
                             <field name="emmited_date" />
                             <field name="status_date" />
                             <field name="due_date" />
-                            <field name="order_number" />
+                            
                         </group>
                         <label for="observations" class="oe_edit_only" string="Observaciones" />
                         <field string="Observaciones" name="observations" />

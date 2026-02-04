@@ -23,7 +23,9 @@ Soporte de Cartas de porte via el WS de ARCA (ex AFIP)
     'data': [
         'security/ir.model.access.csv',
         'views/afip_cpe.xml',
+        'views/afip_cpe_transport.xml',
         'views/res_partner.xml',
+        'views/afip_states.xml',
         
     ],
     # only loaded in demonstration mode

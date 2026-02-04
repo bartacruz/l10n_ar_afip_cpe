@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 l10n_ar_afip_cpe.access_afip_cpe_transport,access_afip_cpe_transport,l10n_ar_afip_cpe.model_afip_cpe_transport,base.group_user,1,1,1,1
 l10n_ar_afip_cpe.access_afip_cpe,access_afip_cpe,l10n_ar_afip_cpe.model_afip_cpe,base.group_user,1,1,1,1
+l10n_ar_afip_cpe.access_afip_state,access_afip_state,l10n_ar_afip_cpe.model_afip_state,base.group_user,1,1,1,1
+l10n_ar_afip_cpe.access_afip_locality,access_afip_locality,l10n_ar_afip_cpe.model_afip_locality,base.group_user,1,1,1,1
