@@ -155,8 +155,8 @@ class AfipCPE(models.Model):
         for record in self:
             l = []
             for x in record.transport_ids:
-                l.append(x.vehicle_id.license_plate)
-                l.append(x.trailer_id.license_plate)
+                l.append(x.vehicle_id.license_plate or '')
+                l.append(x.trailer_id.license_plate or '')
             record.license_plates = ','.join(l)
     
     @api.depends('transport_ids')
@@ -357,12 +357,15 @@ class AfipCPE(models.Model):
                 'is_company':False,
                 'l10n_latam_identification_type_id':cuit_code.id,
             })
-            vals = driver.partner_id.get_data_from_padron_afip()
-            vals.pop('imp_iva_padron',None)
-            vals.pop('imp_ganancias_padron',None)
-            driver.country_id = self.env.user.company_id.country_id
-            driver.partner_id.update(vals)
-            driver.name = driver.name.title()
+            try:
+                vals = driver.partner_id.get_data_from_padron_afip()
+                vals.pop('imp_iva_padron',None)
+                vals.pop('imp_ganancias_padron',None)
+                driver.country_id = self.env.user.company_id.country_id
+                driver.partner_id.update(vals)
+                driver.name = driver.name.title()
+            except:
+                pass
         return driver
         
     def _get_partner(self,cuit,name=None, is_company=True,fetch_locations=False):
