@@ -69,6 +69,8 @@
                             <field name="emmited_date" />
                             <field name="status_date" />
                             <field name="due_date" />
+                            <field name="load_net" string="Carga Neta"/>
+                            <field name="unload_net" string="Descarga Neta"/>
                             
                         </group>
                         <label for="observations" class="oe_edit_only" string="Observaciones" />

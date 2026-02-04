@@ -69,6 +69,13 @@ class AfipCPE(models.Model):
     due_date = fields.Datetime() # fechaVencimiento
     observations = fields.Char(_("Observations"))
     
+    load_gross = fields.Integer()
+    load_tare = fields.Integer()
+    load_net = fields.Integer(compute='_compute_load_net')
+    unload_gross = fields.Integer()
+    unload_tare = fields.Integer()
+    unload_net = fields.Integer(compute='_compute_unload_net')
+    
     destination_code = fields.Integer()
     destination_partner_id = fields.Many2one("res.partner", _("Destination Partner"), domain="[('tms_location','=',False), ('is_company','=',True)]")
     destination_id = fields.Many2one('res.partner',_("Destination"),domain="[('tms_location','=',True)]" )
@@ -85,6 +92,16 @@ class AfipCPE(models.Model):
     drivers = fields.Char(readonly=True,compute='_compute_drivers')
     license_plates = fields.Char(readonly=True,compute='_compute_licenses')
     participants_ids = fields.Many2many('res.partner',compute='_compute_participants', store=True)
+    
+    @api.depends('load_gross','load_tare')
+    def _compute_load_net(self):
+        for record in self:
+            record.load_net = record.load_gross - record.load_tare
+    
+    @api.depends('unload_gross','unload_tare')
+    def _compute_unload_net(self):
+        for record in self:
+            record.unload_net = record.unload_gross - record.unload_tare
     
     @api.depends('origin_id')
     def _compute_origin(self):
@@ -319,6 +336,11 @@ class AfipCPE(models.Model):
         else:
             cpe.destination_state_id = self.env['afip.state'].search([('afip_code','=',destino.get('codProvincia'))],limit=1).state_id
             cpe.destination_city = self.env['afip.locality'].search([('afip_code','=',destino.get('codLocalidad'))],limit=1).name.capitalize()
+        load_data = ws.ret.get('datosCarga')
+        cpe.load_gross = load_data.get('pesoBruto',0)
+        cpe.load_tare = load_data.get('pesoTara',0)
+        cpe.unload_gross = load_data.get('pesoBrutoDescarga',0)
+        cpe.unload_tare = load_data.get('pesoTaraDescarga',0)
         cpe._get_transport(ws,cpe)
         return cpe
 
