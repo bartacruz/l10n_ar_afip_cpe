@@ -65,7 +65,7 @@ class AfipCPE(models.Model):
     order_number = fields.Integer()
     ctg_number = fields.Char(_("CTG Number"))
     emmited_date = fields.Datetime() # fechaEmision
-    status_date = fields.Datetime() # fechaInicioEstado
+    status_date = fields.Datetime() # fechaInicioEstado 
     due_date = fields.Datetime() # fechaVencimiento
     observations = fields.Char(_("Observations"))
     
@@ -239,6 +239,10 @@ class AfipCPE(models.Model):
             self.env['afip.cpe.transport'].search([('cpe_id','=',self.id)]).unlink()
             self.env['afip.cpe.transport'].create(vals)
     
+    def action_check_pending(self):
+        ws = self.get_connection()
+        pending = ws.ConsultarCPEPendientesDeResolucion(perfil="S")
+        
     def action_update_cpe(self):
         vat = self.env.user.company_id.partner_id.vat
         if self.origin_partner_id:

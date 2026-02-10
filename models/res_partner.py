@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 import re
 
 class ResPartner(models.Model):
@@ -8,6 +8,7 @@ class ResPartner(models.Model):
     cpe_ids = fields.Many2many('afip.cpe',compute='_compute_cpe_ids')
     cpe_ids_count = fields.Integer(compute="_compute_cpe_ids",readonly=True,store=True)
 
+    @api.depends('cpe_ids')
     def _compute_cpe_ids(self):
         for record in self:
             record.cpe_ids = self.env['afip.cpe'].search([ ('participants_ids','in',[record.id])])

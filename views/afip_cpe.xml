@@ -102,6 +102,27 @@
             </form>
         </field>
     </record>
+    <record id="view_afip_cpe_search" model="ir.ui.view">
+        <field name="name">afip.cpe.search</field>
+        <field name="model">afip.cpe</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="active" string="Activadas" domain="[('status', '=', 'AC')]" />
+                <filter name="confirmed" string="Confirmadas" domain="[('status', '=', 'CN')]" />
+                <filter name="confirmed" string="No confirmadas" domain="[('status', '!=', 'CN')]" />
+                <filter name="voided" string="Anuladas" domain="[('status', '=', 'AN')]" />
+                <filter name="rejected" string="Rechazadas" domain="[('status', '=', 'RE')]" />
+                <field name="ctg_number" string="Nro CTG" />
+                <field name="participants_ids" string="Participantes" />
+                <field name="customer_id" string="Cliente" />
+                <field name="drivers" string='Conductor' />
+                <field name="origin_number" string="Origen" />
+                <field name="order_number" string="Nro orden" />
+
+            </search>
+        </field>
+    </record>
+
     <record id="action_afip_cpe_view" model="ir.actions.act_window">
         <field name="name">CPE</field>
         <field name="res_model">afip.cpe</field>
