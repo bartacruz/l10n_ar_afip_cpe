@@ -242,18 +242,28 @@ class AfipCPE(models.Model):
     def action_check_pending(self):
         ws = self.get_connection()
         pending = ws.ConsultarCPEPendientesDeResolucion(perfil="S")
+
+    @api.model
+    def _cron_update_active_records(self):
+        actives = self.search([('status','in',['AC','BR','CF','CO','PA','PE','PO'])])
+        for record in actives:
+            record.action_update_cpe()
         
     def action_update_cpe(self):
         vat = self.env.user.company_id.partner_id.vat
-        if self.origin_partner_id:
-            vat = self.origin_partner_id.vat
+        ret = False
         if '-' in self.name:
+            if self.origin_partner_id:
+                vat = self.origin_partner_id.vat
             origin,number = self.name.split('-')
-            self.import_cpe(vat,origin=int(origin),order_number=int(number))
+            ret = self.import_cpe(vat,origin=int(origin),order_number=int(number))
         else:
-            self.import_cpe(vat,ctg=self.name)
+            ret = self.import_cpe(vat,ctg=self.name)
+        return ret
         
     def import_cpe(self,cuit_solicitante, ctg=None,origin=None,order_number=None):
+        old_status = self.status
+        old_status_date = self.status_date
         ws = self.get_connection()
         print(ctg,origin,order_number)
         if ctg:
@@ -284,6 +294,9 @@ class AfipCPE(models.Model):
         }
         if self.id:
             cpe = self
+            if vals.get('status') == old_status:
+                print("ignoring non-updated CPE",cpe.name)
+                return False
             cpe.update(vals)
             cpe.message_post(body=_("Carta de Porte actualizada desde ARCA"))
         else:
