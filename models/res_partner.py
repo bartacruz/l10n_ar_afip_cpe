@@ -7,6 +7,7 @@ class ResPartner(models.Model):
     cpe_location = fields.Integer(string="CPE location")
     cpe_ids = fields.Many2many('afip.cpe',compute='_compute_cpe_ids')
     cpe_ids_count = fields.Integer(compute="_compute_cpe_ids",readonly=True,store=True)
+    cpe_locality = fields.Many2one('afip.locality')
 
     @api.depends('cpe_ids')
     def _compute_cpe_ids(self):
@@ -81,9 +82,10 @@ class ResPartner(models.Model):
                         'tms_location': True,
                         'is_company': True,
                     })
-                location.name = location_name
+                location.name = location_name.title()
                 location.cpe_location = code
                 location.comment = loc.get('')
+                location.type = 'delivery'
                 coords = loc.get('coordenadas')
                 if coords:
                     location.partner_latitude = to_degrees(coords[0].get('latitud'))

@@ -8,6 +8,7 @@
                 <field name="id" />
                 <field name="afip_code" />
                 <field name="afip_name" />
+                <field name="state_code" />
                 <field name="state_id" />
             </tree>
         </field>
@@ -20,8 +21,9 @@
                 <field name="id" />
                 <field name="name" />
                 <field name="afip_code" />
-                <field name="state_id" />
                 <field name="afip_state_id" />
+                <field name="state_id" />
+                
             </tree>
         </field>
     </record>

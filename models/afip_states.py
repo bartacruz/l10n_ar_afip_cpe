@@ -6,6 +6,7 @@ class AfipState(models.Model):
     _rec_name = 'afip_name'
     
     state_id = fields.Many2one('res.country.state')
+    state_code = fields.Char(related='state_id.code')
     country_id = fields.Many2one('res.country',related = 'state_id.country_id', readonly=True)
     afip_code = fields.Integer()
     afip_name = fields.Char()
@@ -35,6 +36,13 @@ class AfipLocality(models.Model):
     afip_code = fields.Integer()
     afip_state_id = fields.Many2one('afip.state', compute='_compute_afip_state', store=True)
     
+    @api.depends('state_id')
+    def _compute_display_name(self):
+        super()._compute_display_name()
+        for record in self:
+            if record.state_id:
+                record.display_name = "%s (%s)" % (record.name.title(),record.state_id.name,)
+        
     @api.depends('state_id')
     def _compute_afip_state(self):
         for record in self:

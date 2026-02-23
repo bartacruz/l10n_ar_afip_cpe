@@ -60,7 +60,9 @@ class AfipCPE(models.Model):
     origin_partner_id = fields.Many2one("res.partner", _("Origin Partner"), domain="[('tms_location','=',False), ('is_company','=',True)]")
     origin_code = fields.Integer()
     origin_id = fields.Many2one('res.partner',_("Origin"),domain="[('tms_location','=',True)]" )
+    origin_locality_id = fields.Many2one('afip.locality')
     origin_state_id = fields.Many2one('res.country.state', compute='_compute_origin', store=True)
+    
     origin_city = fields.Char( compute='_compute_origin', store=True)
     order_number = fields.Integer()
     ctg_number = fields.Char(_("CTG Number"))
@@ -79,6 +81,7 @@ class AfipCPE(models.Model):
     destination_code = fields.Integer()
     destination_partner_id = fields.Many2one("res.partner", _("Destination Partner"), domain="[('tms_location','=',False), ('is_company','=',True)]")
     destination_id = fields.Many2one('res.partner',_("Destination"),domain="[('tms_location','=',True)]" )
+    destination_locality_id = fields.Many2one('afip.locality')
     destination_state_id = fields.Many2one('res.country.state', compute='_compute_destination', store="True")
     destination_city = fields.Char(compute='_compute_destination', store="True")
     
@@ -92,7 +95,10 @@ class AfipCPE(models.Model):
     drivers = fields.Char(readonly=True,compute='_compute_drivers')
     license_plates = fields.Char(readonly=True,compute='_compute_licenses')
     participants_ids = fields.Many2many('res.partner',compute='_compute_participants', store=True)
-    
+    afip_xml_response = fields.Text(
+        string="AFIP XML Response",
+        copy=False,
+    )
     @api.depends('load_gross','load_tare')
     def _compute_load_net(self):
         for record in self:
@@ -249,19 +255,19 @@ class AfipCPE(models.Model):
         for record in actives:
             record.action_update_cpe()
         
-    def action_update_cpe(self):
+    def action_update_cpe(self,force=False):
         vat = self.env.user.company_id.partner_id.vat
         ret = False
         if '-' in self.name:
             if self.origin_partner_id:
                 vat = self.origin_partner_id.vat
             origin,number = self.name.split('-')
-            ret = self.import_cpe(vat,origin=int(origin),order_number=int(number))
+            ret = self.import_cpe(vat,origin=int(origin),order_number=int(number),force=force)
         else:
-            ret = self.import_cpe(vat,ctg=self.name)
+            ret = self.import_cpe(vat,ctg=self.name, force=force)
         return ret
         
-    def import_cpe(self,cuit_solicitante, ctg=None,origin=None,order_number=None):
+    def import_cpe(self,cuit_solicitante, ctg=None,origin=None,order_number=None, force=False):
         old_status = self.status
         old_status_date = self.status_date
         ws = self.get_connection()
@@ -294,7 +300,8 @@ class AfipCPE(models.Model):
         }
         if self.id:
             cpe = self
-            if vals.get('status') == old_status:
+            cpe.afip_xml_response = ws.xml_response
+            if vals.get('status') == old_status and not force:
                 print("ignoring non-updated CPE",cpe.name)
                 return False
             cpe.update(vals)
@@ -309,27 +316,26 @@ class AfipCPE(models.Model):
                 cpe = self.create(vals)
                 cpe.message_post(body=_("Carta de Porte creada desde ARCA"))
                 print("cpe creada",cpe.id, vals)
-        
-        
-        
-        cpe_bytes = ws.PDF
-        if sys.version_info[0] >= 3 and isinstance(cpe_bytes, str):
-            cpe_bytes = cpe_bytes.encode("utf-8")
-        
-        cpe.pdf = base64.b64encode(cpe_bytes).decode()
-        cpe.pdf2 = base64.b64encode(cpe_bytes)
-        attachment = cpe.env['ir.attachment'].create({
-            'name': 'CPE - %s.pdf' % cpe.name,
-            'type': 'binary',
-            'datas': base64.b64encode(cpe_bytes),
-            'res_model': 'afip.cpe',
-            'res_id': cpe.id,
-            'mimetype': 'application/pdf',
-        })
-        body = _("PDF Descargado desde ARCA")
-        cpe.message_post(body=body, attachment_ids=[attachment.id])
-        #cpe.pdf = cpe_bytes
-        cpe.pdf3 = attachment
+                cpe.afip_xml_response = ws.xml_response
+        if not force:
+            cpe_bytes = ws.PDF
+            if sys.version_info[0] >= 3 and isinstance(cpe_bytes, str):
+                cpe_bytes = cpe_bytes.encode("utf-8")
+            
+            cpe.pdf = base64.b64encode(cpe_bytes).decode()
+            cpe.pdf2 = base64.b64encode(cpe_bytes)
+            attachment = cpe.env['ir.attachment'].create({
+                'name': 'CPE - %s.pdf' % cpe.name,
+                'type': 'binary',
+                'datas': base64.b64encode(cpe_bytes),
+                'res_model': 'afip.cpe',
+                'res_id': cpe.id,
+                'mimetype': 'application/pdf',
+            })
+            body = _("PDF Descargado desde ARCA")
+            cpe.message_post(body=body, attachment_ids=[attachment.id])
+            #cpe.pdf = cpe_bytes
+            cpe.pdf3 = attachment
         
         origen = ws.ret.get('origen')
         cpe.origin_partner_id = cpe._get_partner(origen.get('cuit'),fetch_locations=True)
@@ -337,22 +343,27 @@ class AfipCPE(models.Model):
         
         cpe.origin_code = origen.get('planta',False)
         print("Origen",origen.get('planta'),origen.get('codProvincia'),origen.get('codLocalidad'))
+        cpe.origin_locality_id = self.env['afip.locality'].search([('afip_code','=',origen.get('codLocalidad'))],limit=1)
         if cpe.origin_code:
-            cpe.origin_id = self.env['res.partner'].search([ ('cpe_location','=',cpe.origin_code)])
+            cpe.origin_id = self.env['res.partner'].search([ ('cpe_location','=',cpe.origin_code)],limit=1)
+            if cpe.origin_id:
+                cpe.origin_id.cpe_locality = cpe.origin_locality_id
         else:
             cpe.origin_state_id = self.env['afip.state'].search([('afip_code','=',origen.get('codProvincia'))],limit=1).state_id
-            cpe.origin_city = self.env['afip.locality'].search([('afip_code','=',origen.get('codLocalidad'))],limit=1).name.capitalize()
-        
+            cpe.origin_city = cpe.origin_locality_id.name.title()
         destino = ws.ret.get('destino')
         cpe.destination_partner_id = cpe._get_partner(destino.get('cuit'),fetch_locations=True)
         print("destination_partner",cpe.destination_partner_id)
         
+        cpe.destination_locality_id = self.env['afip.locality'].search([('afip_code','=',destino.get('codLocalidad'))],limit=1)
         cpe.destination_code = destino.get('planta',False)
         if cpe.destination_code:
             cpe.destination_id = self.env['res.partner'].search([ ('cpe_location','=',cpe.destination_code)])
+            if cpe.destination_id:
+                cpe.destination_id.cpe_locality = cpe.destination_locality_id
         else:
             cpe.destination_state_id = self.env['afip.state'].search([('afip_code','=',destino.get('codProvincia'))],limit=1).state_id
-            cpe.destination_city = self.env['afip.locality'].search([('afip_code','=',destino.get('codLocalidad'))],limit=1).name.capitalize()
+            cpe.destination_city = cpe.destination_locality_id.name.title()
         load_data = ws.ret.get('datosCarga')
         cpe.load_gross = load_data.get('pesoBruto',0)
         cpe.load_tare = load_data.get('pesoTara',0)
