@@ -6,14 +6,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-26 03:38+0000\n"
-"PO-Revision-Date: 2025-12-26 03:38+0000\n"
+"POT-Creation-Date: 2026-02-23 21:10+0000\n"
+"PO-Revision-Date: 2026-02-23 21:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.actions.act_window,name:l10n_ar_afip_cpe.action_afip_locality_view
+msgid "AFIP Locality"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.actions.act_window,name:l10n_ar_afip_cpe.action_afip_states_view
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.afip_locality_view_tree
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.afip_state_view_tree
+msgid "AFIP States"
+msgstr ""
 
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afipws_connection__afip_ws
@@ -24,6 +36,11 @@ msgstr "WS AFIP"
 #: model:ir.model,name:l10n_ar_afip_cpe.model_afipws_connection
 msgid "AFIP WS Connection"
 msgstr "Conexión de WS AFIP"
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__afip_xml_response
+msgid "AFIP XML Response"
+msgstr ""
 
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__access_warning
@@ -48,6 +65,11 @@ msgstr ""
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields.selection,name:l10n_ar_afip_cpe.selection__afip_cpe__status__ac
 msgid "Activada"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_afip_cpe_search
+msgid "Activadas"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
@@ -76,6 +98,22 @@ msgid "Actualizar"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_locality__afip_code
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_state__afip_code
+msgid "Afip Code"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_state__afip_name
+msgid "Afip Name"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_locality__afip_state_id
+msgid "Afip State"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #: model:ir.model.fields.selection,name:l10n_ar_afip_cpe.selection__afip_cpe__status__ap
 msgid "Anulación por el Productor"
 msgstr ""
@@ -83,6 +121,11 @@ msgstr ""
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields.selection,name:l10n_ar_afip_cpe.selection__afip_cpe__status__an
 msgid "Anulada"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_afip_cpe_search
+msgid "Anuladas"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
@@ -106,6 +149,11 @@ msgid "CPE Locations Lookup"
 msgstr "Buscar ubicaciones de CPE"
 
 #. module: l10n_ar_afip_cpe
+#: model:ir.actions.server,name:l10n_ar_afip_cpe.ir_action_server_action_cpe_plantas_lookup
+msgid "CPE Plantas Lookup"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_res_partner__cpe_location
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_res_users__cpe_location
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_tms_driver__cpe_location
@@ -121,6 +169,11 @@ msgid "CTG Number"
 msgstr "Numero CTG"
 
 #. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.cpe_view_form
+msgid "Carga Neta"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #: model:ir.model,name:l10n_ar_afip_cpe.model_afip_cpe
 #: model:ir.model.fields.selection,name:l10n_ar_afip_cpe.selection__afipws_connection__afip_ws__wscpe
 msgid "Carta de Porte"
@@ -134,8 +187,32 @@ msgstr ""
 #. module: l10n_ar_afip_cpe
 #. odoo-python
 #: code:addons/l10n_ar_afip_cpe/models/afip_cpe.py:0
+#: code:addons/l10n_ar_afip_cpe/models/afip_cpe.py:0
 #, python-format
-msgid "Carta de Porte importada desde ARCA"
+msgid "Carta de Porte actualizada desde ARCA"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#. odoo-python
+#: code:addons/l10n_ar_afip_cpe/models/afip_cpe.py:0
+#, python-format
+msgid "Carta de Porte creada desde ARCA"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.cpe_view_form
+msgid "Ciudad"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.cpe_view_form
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_afip_cpe_search
+msgid "Cliente"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_afip_cpe_search
+msgid "Conductor"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
@@ -144,24 +221,55 @@ msgid "Confirmada"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_afip_cpe_search
+msgid "Confirmadas"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #: model:ir.model,name:l10n_ar_afip_cpe.model_res_partner
 msgid "Contact"
 msgstr "Contacto"
 
 #. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_state__country_id
+msgid "Country"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe_transport__cpe_id
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_res_partner__cpe_ids
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_res_users__cpe_ids
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_tms_driver__cpe_ids
 msgid "Cpe"
 msgstr "Carta de Porte"
 
 #. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_res_partner__cpe_ids_count
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_res_users__cpe_ids_count
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_tms_driver__cpe_ids_count
+msgid "Cpe Ids Count"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_res_partner__cpe_locality
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_res_users__cpe_locality
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_tms_driver__cpe_locality
+msgid "Cpe Locality"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__create_uid
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe_transport__create_uid
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_locality__create_uid
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_state__create_uid
 msgid "Created by"
 msgstr "Creada por"
 
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__create_date
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe_transport__create_date
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_locality__create_date
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_state__create_date
 msgid "Created on"
 msgstr "Creada el"
 
@@ -191,8 +299,18 @@ msgid "Desactivada"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.cpe_view_form
+msgid "Descarga Neta"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #: model:ir.model.fields.selection,name:l10n_ar_afip_cpe.selection__afip_cpe__status__dd
 msgid "Descargado en destino"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.cpe_view_form
+msgid "Destinatario"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
@@ -201,7 +319,22 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__destination_id
 #, python-format
 msgid "Destination"
-msgstr "Destino"
+msgstr "Ubicación de Destino"
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__destination_city
+msgid "Destination City"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__destination_code
+msgid "Destination Code"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__destination_locality_id
+msgid "Destination Locality"
+msgstr "Localidad de Destino"
 
 #. module: l10n_ar_afip_cpe
 #. odoo-python
@@ -212,8 +345,15 @@ msgid "Destination Partner"
 msgstr "Cliente destino"
 
 #. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__destination_state_id
+msgid "Destination State"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__display_name
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe_transport__display_name
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_locality__display_name
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_state__display_name
 msgid "Display Name"
 msgstr "Nombre a Mostrar"
 
@@ -279,6 +419,8 @@ msgstr "Tiene Mensajes"
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__id
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe_transport__id
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_locality__id
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_state__id
 msgid "ID"
 msgstr ""
 
@@ -316,12 +458,16 @@ msgstr ""
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__write_uid
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe_transport__write_uid
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_locality__write_uid
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_state__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__write_date
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe_transport__write_date
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_locality__write_date
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_state__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -329,6 +475,26 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__license_plates
 msgid "License Plates"
 msgstr "Matrícula"
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__load_gross
+msgid "Load Gross"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__load_net
+msgid "Load Net"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__load_tare
+msgid "Load Tare"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_partner_form_inherit_cpe
+msgid "Location:"
+msgstr ""
 
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__message_has_error
@@ -347,7 +513,7 @@ msgstr ""
 
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__name
-#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.cpe_view_form
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_locality__name
 msgid "Name"
 msgstr "Nombre"
 
@@ -364,6 +530,21 @@ msgstr ""
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__activity_type_id
 msgid "Next Activity Type"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_afip_cpe_search
+msgid "No confirmadas"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_afip_cpe_search
+msgid "Nro CTG"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_afip_cpe_search
+msgid "Nro orden"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
@@ -405,12 +586,32 @@ msgid "Order Number"
 msgstr "Nro de Orden"
 
 #. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_afip_cpe_search
+msgid "Origen"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #. odoo-python
 #: code:addons/l10n_ar_afip_cpe/models/afip_cpe.py:0
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__origin_id
 #, python-format
 msgid "Origin"
-msgstr "Origen"
+msgstr "Ubicación de Origen"
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__origin_city
+msgid "Origin City"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__origin_code
+msgid "Origin Code"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__origin_locality_id
+msgid "Origin Locality"
+msgstr "Localidad de Origen"
 
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__origin_number
@@ -426,10 +627,25 @@ msgid "Origin Partner"
 msgstr "Cliente de Origen"
 
 #. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__origin_state_id
+msgid "Origin State"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #. odoo-python
 #: code:addons/l10n_ar_afip_cpe/models/afip_cpe.py:0
 #, python-format
 msgid "PDF Descargado desde ARCA"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_afip_cpe_search
+msgid "Participantes"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__participants_ids
+msgid "Participants"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
@@ -468,6 +684,11 @@ msgid "Pendiente de emisión"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.cpe_view_form
+msgid "Planta"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__access_url
 msgid "Portal Access URL"
 msgstr ""
@@ -481,8 +702,18 @@ msgid "Price"
 msgstr "Precio"
 
 #. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.cpe_view_form
+msgid "Provincia"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #: model:ir.model.fields.selection,name:l10n_ar_afip_cpe.selection__afip_cpe__status__re
 msgid "Rechazada"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.view_afip_cpe_search
+msgid "Rechazadas"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
@@ -509,6 +740,17 @@ msgid "Start Date"
 msgstr "Inicio"
 
 #. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_locality__state_id
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_state__state_id
+msgid "State"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_state__state_code
+msgid "State Code"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #. odoo-python
 #: code:addons/l10n_ar_afip_cpe/models/afip_cpe.py:0
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__status
@@ -528,6 +770,16 @@ msgid ""
 "Overdue: Due date is already passed\n"
 "Today: Activity date is today\n"
 "Planned: Future activities."
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,help:l10n_ar_afip_cpe.field_afip_state__state_code
+msgid "The state code."
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.cpe_view_form
+msgid "Titular"
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
@@ -579,6 +831,21 @@ msgid "Type of the exception activity on record."
 msgstr ""
 
 #. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__unload_gross
+msgid "Unload Gross"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__unload_net
+msgid "Unload Net"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe__unload_tare
+msgid "Unload Tare"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
 #. odoo-python
 #: code:addons/l10n_ar_afip_cpe/models/afip_cpe.py:0
 #: model:ir.model.fields,field_description:l10n_ar_afip_cpe.field_afip_cpe_transport__vehicle_id
@@ -594,4 +861,19 @@ msgstr ""
 #. module: l10n_ar_afip_cpe
 #: model:ir.model.fields,help:l10n_ar_afip_cpe.field_afip_cpe__website_message_ids
 msgid "Website communication history"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model_terms:ir.ui.view,arch_db:l10n_ar_afip_cpe.cpe_view_form
+msgid "XML"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model,name:l10n_ar_afip_cpe.model_afip_locality
+msgid "afip.locality"
+msgstr ""
+
+#. module: l10n_ar_afip_cpe
+#: model:ir.model,name:l10n_ar_afip_cpe.model_afip_state
+msgid "afip.state"
 msgstr ""

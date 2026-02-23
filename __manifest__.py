@@ -15,7 +15,7 @@ Soporte de Cartas de porte via el WS de ARCA (ex AFIP)
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     "category": "Localization/Argentina",
-    'version': '17.0.0.4',
+    'version': '17.0.0.5',
 
     # any module necessary for this one to work correctly
     'depends': ["base","l10n_ar_afipws","l10n_ar"],
