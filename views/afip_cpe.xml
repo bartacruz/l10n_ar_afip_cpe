@@ -6,14 +6,18 @@
         <field name="arch" type="xml">
             <tree string="">
                 <field name="name" />
-                <field name="order_number" />
-                <field name="origin_number" />
-                <field name="origin_partner_id" />
-                <field name="origin_id" />
-                <field name="destination_id" />
-                <field name="destination_partner_id" />
+                <field name="order_number" optional="hide"/>
+                <field name="origin_number" optional="hide"/>
+                <field name="customer_id" optional="show"/>
+                <field name="origin_partner_id" optional="show"/>
+                <field name="origin_id" optional="hide"/>
+                <field name="origin_locality_id" optional="show"/>
+                <field name="destination_id" optional="hide"/>
+                <field name="destination_locality_id" optional="show"/>
+                <field name="destination_partner_id" optional="hide"/>
                 <field name="drivers" />
                 <field name="license_plates" />
+                <field name="unload_net" optional="show"/>
                 <field name="status" />
                 
 

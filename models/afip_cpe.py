@@ -305,7 +305,7 @@ class AfipCPE(models.Model):
             cpe = self
             cpe.afip_xml_response = ws.xml_response
             
-            _logger.info("Checking CPE updated:",self.name,vals.get('status'),old_status,vals.get('status_date'), self.status_date,force)
+            _logger.info("Checking CPE %s updated: %s %s %s %s %s",self.name,vals.get('status'),old_status,vals.get('status_date'), self.status_date,force)
             if vals.get('status') == old_status and vals.get('status_date') == self.status_date and not force:
                 print("ignoring non-updated CPE",cpe.name)
                 return False
