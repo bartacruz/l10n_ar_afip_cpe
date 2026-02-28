@@ -9,6 +9,9 @@ from datetime import datetime
 import base64
 import sys
 import io
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class AfipCPETransport(models.Model):
     _name = "afip.cpe.transport"
@@ -301,7 +304,9 @@ class AfipCPE(models.Model):
         if self.id:
             cpe = self
             cpe.afip_xml_response = ws.xml_response
-            if vals.get('status') == old_status and not force:
+            
+            _logger.info("Checking CPE updated:",self.name,vals.get('status'),old_status,vals.get('status_date'), self.status_date,force)
+            if vals.get('status') == old_status and vals.get('status_date') == self.status_date and not force:
                 print("ignoring non-updated CPE",cpe.name)
                 return False
             cpe.update(vals)
