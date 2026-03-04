@@ -10,6 +10,7 @@ import base64
 import sys
 import io
 import logging
+import pytz
 
 _logger = logging.getLogger(__name__)
 
@@ -92,9 +93,9 @@ class AfipCPE(models.Model):
     customer_id = fields.Many2one("res.partner", _("Customer"), domain="[('tms_location','=',False), ('is_company','=',True)]", compute='_compute_customer_id', store=True)
     transport_ids = fields.One2many('afip.cpe.transport','cpe_id',_("Transports"))
     pdf = fields.Binary()
-    pdf_filename = fields.Char(compute = '_compute_pdf_filename')
     pdf2 = fields.Binary()
     pdf3 = fields.Many2one('ir.attachment')
+    
     drivers = fields.Char(readonly=True,compute='_compute_drivers')
     license_plates = fields.Char(readonly=True,compute='_compute_licenses')
     participants_ids = fields.Many2many('res.partner',compute='_compute_participants', store=True)
@@ -102,6 +103,29 @@ class AfipCPE(models.Model):
         string="AFIP XML Response",
         copy=False,
     )
+        
+    
+    def _localize_datetime(self, dt_value):
+        """
+        Convierte un string ISO o un datetime naive a un datetime 
+        localizado según la zona horaria del usuario.
+        """
+        if not dt_value:
+            return False
+            
+        if isinstance(dt_value, str):
+            dt_value = datetime.fromisoformat(dt_value)
+        
+        if dt_value.tzinfo:
+            return dt_value    
+        user_tz = pytz.timezone(self.env.user.tz or 'UTC')
+        if dt_value.tzinfo:
+            dt_utc = dt_value.astimezone(pytz.utc)
+        else:
+            dt_localized = user_tz.localize(dt_value)
+            dt_utc = dt_localized.astimezone(pytz.utc)
+        return dt_utc.replace(tzinfo=None)
+    
     @api.depends('load_gross','load_tare')
     def _compute_load_net(self):
         for record in self:
@@ -236,7 +260,7 @@ class AfipCPE(models.Model):
                 'driver_id': driver.partner_id.id,
                 'vehicle_id': vehicle.id,
                 'trailer_id': trailer.id if trailer else None,
-                'start_date': datetime.fromisoformat(t.find("fechaHoraPartida").text),
+                'start_date': self._localize_datetime(t.find("fechaHoraPartida").text),
                 'distance': t.find("kmRecorrer").text,
                 'fumigated_goods': t.find("mercaderiaFumigada").text
             }
@@ -296,9 +320,9 @@ class AfipCPE(models.Model):
             'origin_number':cabecera.get('sucursal'),
             'order_number': cabecera.get('nroOrden'),
             'ctg_number': ws.NroCTG,
-            'emmited_date': ws.FechaEmision,
-            'status_date': ws.FechaInicioEstado,
-            'due_date': ws.FechaVencimiento,
+            'emmited_date': self._localize_datetime(ws.FechaEmision),
+            'status_date': self._localize_datetime(ws.FechaInicioEstado),
+            'due_date': self._localize_datetime(ws.FechaVencimiento),
             'observations': ws.Observaciones,
         }
         if self.id:

@@ -6,20 +6,20 @@
         <field name="arch" type="xml">
             <tree string="">
                 <field name="name" />
-                <field name="order_number" optional="hide"/>
-                <field name="origin_number" optional="hide"/>
-                <field name="customer_id" optional="show"/>
-                <field name="origin_partner_id" optional="show"/>
-                <field name="origin_id" optional="hide"/>
-                <field name="origin_locality_id" optional="show"/>
-                <field name="destination_id" optional="hide"/>
-                <field name="destination_locality_id" optional="show"/>
-                <field name="destination_partner_id" optional="hide"/>
+                <field name="order_number" optional="hide" />
+                <field name="origin_number" optional="hide" />
+                <field name="customer_id" optional="show" />
+                <field name="origin_partner_id" optional="show" />
+                <field name="origin_id" optional="hide" />
+                <field name="origin_locality_id" optional="show" />
+                <field name="destination_id" optional="hide" />
+                <field name="destination_locality_id" optional="show" />
+                <field name="destination_partner_id" optional="hide" />
                 <field name="drivers" />
                 <field name="license_plates" />
-                <field name="unload_net" optional="show"/>
+                <field name="unload_net" optional="show" />
                 <field name="status" />
-                
+
 
             </tree>
         </field>
@@ -50,34 +50,37 @@
                         </h1>
                     </div>
                     <group>
-                        
+
                         <group>
-                            <field name="customer_id" string="Cliente"/>    
-                            <field name="origin_partner_id" string="Titular"/>
-                            <field name="origin_code" string="Planta" invisible="origin_code == 0"/>
-                            <field name="origin_id" invisible="not origin_id" readonly="True" widget="res_partner_many2one" context="{'show_address': 1, 'show_vat': False}"/>
+                            <field name="customer_id" string="Cliente" />
+                            <field name="origin_partner_id" string="Titular" />
+                            <field name="origin_code" string="Planta" invisible="origin_code == 0" />
+                            <field name="origin_id" invisible="not origin_id" readonly="True" widget="res_partner_many2one"
+                                context="{'show_address': 1, 'show_vat': False}" />
                             <field name="origin_locality_id" />
                             <field name="origin_city" string="Ciudad" invisible="origin_id" />
                             <field name="origin_state_id" string="Provincia" invisible="origin_id" />
-                            
-                            <field name="destination_partner_id" string="Destinatario"/>
-                            <field name="destination_code" string="Planta" invisible="destination_code == 0"/>
-                            <field name="destination_id" invisible="not destination_id" readonly="True" widget="res_partner_many2one" context="{'show_address': 1, 'show_vat': False}"/>
+
+                            <field name="destination_partner_id" string="Destinatario" />
+                            <field name="destination_code" string="Planta" invisible="destination_code == 0" />
+                            <field name="destination_id" invisible="not destination_id" readonly="True"
+                                widget="res_partner_many2one" context="{'show_address': 1, 'show_vat': False}" />
                             <field name="destination_locality_id" />
                             <field name="destination_city" string="Ciudad" invisible="destination_id" />
                             <field name="destination_state_id" string="Provincia" invisible="destination_id" />
-                            
+
                         </group>
                         <group>
                             <field name="ctg_number" />
                             <field name="origin_number" />
                             <field name="order_number" />
-                            
+
                             <field name="emmited_date" />
                             <field name="status_date" />
                             <field name="due_date" />
-                            <field name="load_net" string="Carga Neta"/>
-                            <field name="unload_net" string="Descarga Neta"/>
+                            <field name="load_net" string="Carga Neta" />
+                            <field name="unload_net" string="Descarga Neta" />
+
                             
                         </group>
                         <label for="observations" class="oe_edit_only" string="Observaciones" />
