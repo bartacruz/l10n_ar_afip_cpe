@@ -82,6 +82,7 @@ class AfipCPE(models.Model):
     unload_tare = fields.Integer()
     unload_net = fields.Integer(compute='_compute_unload_net')
     
+    distance = fields.Integer(compute='_compute_transports_distance', store=True)
     destination_code = fields.Integer()
     destination_partner_id = fields.Many2one("res.partner", _("Destination Partner"), domain="[('tms_location','=',False), ('is_company','=',True)]")
     destination_id = fields.Many2one('res.partner',_("Destination"),domain="[('tms_location','=',True)]" )
@@ -126,6 +127,10 @@ class AfipCPE(models.Model):
             dt_utc = dt_localized.astimezone(pytz.utc)
         return dt_utc.replace(tzinfo=None)
     
+    def _compute_transports_distance(self):
+        for record in self:
+            record.distance = sum(record.transport_ids.mapped('distance'))
+            
     @api.depends('load_gross','load_tare')
     def _compute_load_net(self):
         for record in self:

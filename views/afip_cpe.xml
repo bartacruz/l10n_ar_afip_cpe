@@ -17,6 +17,7 @@
                 <field name="destination_partner_id" optional="hide" />
                 <field name="drivers" />
                 <field name="license_plates" />
+                <field name="distance" optional="show"/>
                 <field name="unload_net" optional="show" />
                 <field name="status" />
 
@@ -74,7 +75,6 @@
                             <field name="ctg_number" />
                             <field name="origin_number" />
                             <field name="order_number" />
-
                             <field name="emmited_date" />
                             <field name="status_date" />
                             <field name="due_date" />
