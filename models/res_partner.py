@@ -9,10 +9,10 @@ class ResPartner(models.Model):
     cpe_ids_count = fields.Integer(compute="_compute_cpe_ids",readonly=True,store=True)
     cpe_locality = fields.Many2one('afip.locality')
 
-    @api.depends('cpe_ids')
+    @api.depends('cpe_ids.participants_ids')
     def _compute_cpe_ids(self):
         for record in self:
-            record.cpe_ids = self.env['afip.cpe'].search([ ('participants_ids','in',[record.id])])
+            record.cpe_ids = self.env['afip.cpe'].search([ ('participants_ids','in',record.id)])
             record.cpe_ids_count = len(record.cpe_ids)
             
     def action_cpe_plantas_lookup(self):

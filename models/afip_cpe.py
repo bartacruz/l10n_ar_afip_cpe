@@ -97,7 +97,7 @@ class AfipCPE(models.Model):
     pdf2 = fields.Binary()
     pdf3 = fields.Many2one('ir.attachment')
     
-    drivers = fields.Char(readonly=True,compute='_compute_drivers')
+    drivers = fields.Char(readonly=True,compute='_compute_drivers', store=True, copy=False)
     license_plates = fields.Char(readonly=True,compute='_compute_licenses')
     participants_ids = fields.Many2many('res.partner',compute='_compute_participants', store=True)
     afip_xml_response = fields.Text(
@@ -161,14 +161,16 @@ class AfipCPE(models.Model):
                 record.destination_state_id = False
                 record.destination_city = None
                                 
-    @api.depends('origin_partner_id','customer_id','destination_partner_id','transport_ids')
+    @api.depends('origin_partner_id','customer_id','destination_partner_id','transport_ids.driver_id')
     def _compute_participants(self):
         for record in self:
-            record.participants_ids = record.customer_id | record.origin_partner_id | record.destination_partner_id
-            for t in record.transport_ids:
-                record.participants_ids |= t.customer_id
-                record.participants_ids |= t.driver_id
-            
+            p = record.customer_id 
+            p |= record.origin_partner_id 
+            p |= record.destination_partner_id 
+            p |= record.transport_ids.mapped('customer_id')
+            p |= record.transport_ids.mapped('driver_id')
+            record.participants_ids = p
+
         
     # @api.depends('pdf','pdf_filename')
     # def _encode_pdf(self):
@@ -183,10 +185,10 @@ class AfipCPE(models.Model):
         for record in self:
             record.pdf_filename = 'CPG - %s.pdf' % record.name
     
-    @api.depends('transport_ids')
+    @api.depends('transport_ids.driver_id')
     def _compute_drivers(self):
         for record in self:
-            record.drivers = ','.join( [x.driver_id.name for x in record.transport_ids])
+            record.drivers = ','.join( record.transport_ids.mapped('driver_id.name'))
     
     @api.depends('transport_ids')
     def _compute_licenses(self):
@@ -249,20 +251,18 @@ class AfipCPE(models.Model):
             vehicle = self._get_vehicle(dominios[0])
             trailer = self._get_vehicle(dominios[1], trailer=True) if len(dominios) > 1 else None
             driver = self._get_driver(t.find('cuitChofer').text)
-            print("vehicles",vehicle,trailer,driver,driver.tms_driver_id)
-            if vehicle and driver:
-                vehicle.tms_driver_id = driver
-                vehicle.driver_id = driver.partner_id
-            if trailer:
-                # TODO: check if this doesn't override vehicle driver
-                # TODO: Trailer logic in fleet.vehicle
+            print("vehicles",vehicle,trailer,driver)
+            if vehicle and not vehicle.trailer_id and trailer and not trailer.truck_id:
                 vehicle.trailer_id = trailer
+            if vehicle and driver:
+                if driver and not driver.vehicle_id and vehicle and not vehicle.driver_id:
+                    driver.vehicle_id = vehicle
             
             vals = {
                 'cpe_id': cpe.id,
                 'partner_id': self._get_partner(t.find('cuitTransportista').text).id,
                 'customer_id': self._get_partner(t.find('cuitPagadorFlete').text).id,
-                'driver_id': driver.partner_id.id,
+                'driver_id': driver.id,
                 'vehicle_id': vehicle.id,
                 'trailer_id': trailer.id if trailer else None,
                 'start_date': self._localize_datetime(t.find("fechaHoraPartida").text),
@@ -408,23 +408,23 @@ class AfipCPE(models.Model):
 
     def _get_driver(self,cuit,name=None):
         sanitized_cuit = '%s' % cuit
-        driver = self.env['tms.driver'].search([ ('vat','=',sanitized_cuit) ],limit=1)
+        driver = self.env['res.partner'].search([ ('vat','=',sanitized_cuit) ],limit=1)
         if not driver:
             # The ident type "CUIT"
             cuit_code = self.env['l10n_latam.identification.type'].search([ ('l10n_ar_afip_code','=',80)])
             
-            driver = self.env['tms.driver'].create({
+            driver = self.env['res.partner'].create({
                 'name': name or sanitized_cuit,
                 'vat': sanitized_cuit,
                 'is_company':False,
                 'l10n_latam_identification_type_id':cuit_code.id,
             })
             try:
-                vals = driver.partner_id.get_data_from_padron_afip()
+                vals = driver.get_data_from_padron_afip()
                 vals.pop('imp_iva_padron',None)
                 vals.pop('imp_ganancias_padron',None)
                 driver.country_id = self.env.user.company_id.country_id
-                driver.partner_id.update(vals)
+                driver.update(vals)
                 driver.name = driver.name.title()
             except:
                 pass
