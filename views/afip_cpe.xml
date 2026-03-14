@@ -6,6 +6,8 @@
         <field name="arch" type="xml">
             <tree string="">
                 <field name="name" />
+                <field name="emmited_date" optional="hide"/>
+                <field name="status_date" optional="show"/>
                 <field name="order_number" optional="hide" />
                 <field name="origin_number" optional="hide" />
                 <field name="customer_id" optional="show" />

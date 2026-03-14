@@ -127,6 +127,7 @@ class AfipCPE(models.Model):
             dt_utc = dt_localized.astimezone(pytz.utc)
         return dt_utc.replace(tzinfo=None)
     
+    @api.depends('transport_ids.distance')
     def _compute_transports_distance(self):
         for record in self:
             record.distance = sum(record.transport_ids.mapped('distance'))
