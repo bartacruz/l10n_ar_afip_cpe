@@ -93,4 +93,12 @@ class ResPartner(models.Model):
                 print("saving ",location, location.name,location.cpe_location,location.partner_latitude,location.partner_longitude)
                 # location.save()
 
-    
+    def action_view_cpe(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "afip.cpe",
+            "view_mode": "tree,form",
+            "domain": [("participants_ids", "in", [self.id])],
+            "name": "CPEs %s" % self.name,
+        }

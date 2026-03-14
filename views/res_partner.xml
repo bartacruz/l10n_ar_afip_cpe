@@ -1,27 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="view_partner_view_buttons" model="ir.ui.view">
+        <field name="name">partner.view.buttons</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+
+                <button class="oe_stat_button" name="action_view_cpe" type="object"
+                    icon="fa-file-text-o"
+                    context="{'search_default_partner_id': id}"
+                    invisible="cpe_ids_count &lt;=0">
+                    <field string="CPEs" name="cpe_ids_count" widget="statinfo" />
+                </button>
+            </div>
+        </field>
+    </record>
+    
     <record id="view_partner_form_inherit_cpe" model="ir.ui.view">
         <field name="name">res.partner.form.inherit.cpe</field>
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='category_id']" position="after">
-                <field name="cpe_location" invisible="not cpe_location"/>
+                <field name="cpe_location" invisible="not cpe_location" />
             </xpath>
             <xpath expr="//field[@name='child_ids']//sheet//field[@name='email']" position="after">
-                <field name="cpe_location" invisible="not cpe_location or cpe_location==0"/>
+                <field name="cpe_location" invisible="not cpe_location or cpe_location==0" />
             </xpath>
             <xpath expr="//field[@name='child_ids']//div[@t-if='record.mobile.raw_value']" position="after">
-                <div t-if="record.cpe_location.value">Location: <t t-esc="record.cpe_location.value"/></div>
+                <div t-if="record.cpe_location.value">Location: <t t-esc="record.cpe_location.value" /></div>
             </xpath>
         </field>
     </record>
 
     <record id="ir_action_server_action_cpe_locations_lookup" model="ir.actions.server">
         <field name="name">CPE Locations Lookup</field>
-        <field name="model_id" ref="base.model_res_partner"/>
-        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="model_id" ref="base.model_res_partner" />
+        <field name="binding_model_id" ref="base.model_res_partner" />
         <field name="binding_view_types">form</field>
         <field name="groups_id" eval="[Command.link(ref('base.group_system'))]" />
         <field name="state">code</field>
@@ -31,8 +48,8 @@
     </record>
     <record id="ir_action_server_action_cpe_plantas_lookup" model="ir.actions.server">
         <field name="name">CPE Plantas Lookup</field>
-        <field name="model_id" ref="base.model_res_partner"/>
-        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="model_id" ref="base.model_res_partner" />
+        <field name="binding_model_id" ref="base.model_res_partner" />
         <field name="binding_view_types">form</field>
         <field name="groups_id" eval="[Command.link(ref('base.group_system'))]" />
         <field name="state">code</field>
