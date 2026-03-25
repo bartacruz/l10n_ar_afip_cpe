@@ -5,7 +5,7 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     cpe_location = fields.Integer(string="CPE location")
-    cpe_ids = fields.Many2many('afip.cpe',compute='_compute_cpe_ids')
+    cpe_ids = fields.Many2many('afip.cpe',compute='_compute_cpe_ids', store=True)
     cpe_ids_count = fields.Integer(compute="_compute_cpe_ids",readonly=True,store=True)
     cpe_locality = fields.Many2one('afip.locality')
 
