@@ -98,7 +98,7 @@ class ResPartner(models.Model):
         return {
             "type": "ir.actions.act_window",
             "res_model": "afip.cpe",
-            "view_mode": "tree,form",
+            "view_mode": "list,form",
             "domain": [("participants_ids", "in", [self.id])],
             "name": "CPEs %s" % self.name,
         }

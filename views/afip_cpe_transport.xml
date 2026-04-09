@@ -4,7 +4,7 @@
         <field name="name">afip.cpe.transport.view.tree</field>
         <field name="model">afip.cpe.transport</field>
         <field name="arch" type="xml">
-            <tree string="">
+            <list string="">
                 <field name="customer_id" />
                 <field name="start_date" />
                 <field name="driver_id" />
@@ -13,7 +13,7 @@
                 <field name="distance" />
                 <field name="price" />
 
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>
