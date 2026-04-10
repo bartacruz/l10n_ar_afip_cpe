@@ -19,18 +19,18 @@ class AfipCPETransport(models.Model):
     _description = "Transporte de Carta de Porte"
     cpe_id = fields.Many2one('afip.cpe')
     
-    partner_id = fields.Many2one('res.partner',_("Transport Company"),domain="[('tms_location','=',False), ('is_company','=',True)]")
-    customer_id = fields.Many2one("res.partner", _("Customer"), domain="[('tms_location','=',False), ('is_company','=',True)]")
+    partner_id = fields.Many2one('res.partner',"Transport Company",domain="[('is_company','=',True)]")
+    customer_id = fields.Many2one("res.partner", "Customer", domain="[('is_company','=',True)]")
     
-    driver_id = fields.Many2one('res.partner', _("Driver"))
-    vehicle_id = fields.Many2one('fleet.vehicle',_("Vehicle"))
-    trailer_id = fields.Many2one("fleet.vehicle",_("Trailer"))
+    driver_id = fields.Many2one('res.partner', "Driver")
+    vehicle_id = fields.Many2one('fleet.vehicle',"Vehicle")
+    trailer_id = fields.Many2one("fleet.vehicle","Trailer")
     
-    start_date = fields.Datetime(_("Start Date"))
-    distance = fields.Integer(_("Distance"),help=_("Travelled distance (in Kms)"))
+    start_date = fields.Datetime("Start Date")
+    distance = fields.Integer("Distance",help="Travelled distance (in Kms)")
     currency_id = fields.Many2one(related='partner_id.company_id.currency_id')
-    price = fields.Monetary(_("Price"),currency_field="currency_id")
-    fumigated_goods = fields.Boolean(_("Fumigated Goods"))
+    price = fields.Monetary("Price",currency_field="currency_id")
+    fumigated_goods = fields.Boolean("Fumigated Goods")
     
     
 class AfipCPE(models.Model):
@@ -55,25 +55,25 @@ class AfipCPE(models.Model):
         ('IN', 'Inactiva'),
         ('PO', 'Pendiente de Aceptacion por el Origen'),
         ],
-        _("Status"),
+        "Status",
         required=True,
         default='BR'
     )
     type = fields.Integer()
     origin_number=fields.Integer() # saved for reference only
-    origin_partner_id = fields.Many2one("res.partner", _("Origin Partner"), domain="[('tms_location','=',False), ('is_company','=',True)]")
+    origin_partner_id = fields.Many2one("res.partner", "Origin Partner", domain="[('is_company','=',True)]")
     origin_code = fields.Integer()
-    origin_id = fields.Many2one('res.partner',_("Origin"),domain="[('tms_location','=',True)]" )
+    origin_id = fields.Many2one('res.partner',"Origin",domain="[('is_company','=',True)]" )
     origin_locality_id = fields.Many2one('afip.locality')
     origin_state_id = fields.Many2one('res.country.state', compute='_compute_origin', store=True)
     
     origin_city = fields.Char( compute='_compute_origin', store=True)
     order_number = fields.Integer()
-    ctg_number = fields.Char(_("CTG Number"))
+    ctg_number = fields.Char("CTG Number")
     emmited_date = fields.Datetime() # fechaEmision
     status_date = fields.Datetime() # fechaInicioEstado 
     due_date = fields.Datetime() # fechaVencimiento
-    observations = fields.Char(_("Observations"))
+    observations = fields.Char("Observations")
     
     load_gross = fields.Integer()
     load_tare = fields.Integer()
@@ -84,15 +84,15 @@ class AfipCPE(models.Model):
     
     distance = fields.Integer(compute='_compute_transports_distance', store=True)
     destination_code = fields.Integer()
-    destination_partner_id = fields.Many2one("res.partner", _("Destination Partner"), domain="[('tms_location','=',False), ('is_company','=',True)]")
-    destination_id = fields.Many2one('res.partner',_("Destination"),domain="[('tms_location','=',True)]" )
+    destination_partner_id = fields.Many2one("res.partner", "Destination Partner", domain="[('is_company','=',True)]")
+    destination_id = fields.Many2one('res.partner',"Destination",domain="[('is_company','=',True)]" )
     destination_locality_id = fields.Many2one('afip.locality')
     destination_state_id = fields.Many2one('res.country.state', compute='_compute_destination', store="True")
     destination_city = fields.Char(compute='_compute_destination', store="True")
     
     
-    customer_id = fields.Many2one("res.partner", _("Customer"), domain="[('tms_location','=',False), ('is_company','=',True)]", compute='_compute_customer_id', store=True)
-    transport_ids = fields.One2many('afip.cpe.transport','cpe_id',_("Transports"))
+    customer_id = fields.Many2one("res.partner", "Customer", domain="[('is_company','=',True)]", compute='_compute_customer_id', store=True)
+    transport_ids = fields.One2many('afip.cpe.transport','cpe_id',"Transports")
     pdf = fields.Binary()
     pdf2 = fields.Binary()
     pdf3 = fields.Many2one('ir.attachment')
