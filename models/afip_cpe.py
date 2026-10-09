@@ -28,7 +28,7 @@ class AfipCPETransport(models.Model):
     
     start_date = fields.Datetime(_("Start Date"))
     distance = fields.Integer(_("Distance"),help=_("Travelled distance (in Kms)"))
-    currency_id = fields.Many2one(related='company_id.currency_id')
+    currency_id = fields.Many2one(related='cpe_id.company_id.currency_id')
     price = fields.Monetary(_("Price"),currency_field="currency_id")
     fumigated_goods = fields.Boolean(_("Fumigated Goods"))
     
