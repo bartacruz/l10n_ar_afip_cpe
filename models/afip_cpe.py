@@ -28,7 +28,7 @@ class AfipCPETransport(models.Model):
     
     start_date = fields.Datetime(_("Start Date"))
     distance = fields.Integer(_("Distance"),help=_("Travelled distance (in Kms)"))
-    currency_id = fields.Many2one(related='partner_id.company_id.currency_id')
+    currency_id = fields.Many2one(related='company_id.currency_id')
     price = fields.Monetary(_("Price"),currency_field="currency_id")
     fumigated_goods = fields.Boolean(_("Fumigated Goods"))
     
@@ -60,6 +60,14 @@ class AfipCPE(models.Model):
         default='BR'
     )
     type = fields.Integer()
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        index=True,
+        default=lambda self: self.env.company,
+        help="Company related to this order",
+    )
     origin_number=fields.Integer() # saved for reference only
     origin_partner_id = fields.Many2one("res.partner", _("Origin Partner"), domain="[('tms_location','=',False), ('is_company','=',True)]")
     origin_code = fields.Integer()
@@ -209,7 +217,7 @@ class AfipCPE(models.Model):
                 record.customer_id = None
                 
     def get_connection(self):
-        ws = self.env.user.company_id.get_connection("wscpe").connect()
+        ws = self.company_id.get_connection("wscpe").connect()
         msg = "AppServerStatus: %s DbServerStatus: %s AuthServerStatus: %s" % (
             ws.AppServerStatus,
             ws.DbServerStatus,
@@ -289,7 +297,7 @@ class AfipCPE(models.Model):
             record.action_update_cpe()
         
     def action_update_cpe(self,force=False):
-        vat = self.env.user.company_id.partner_id.vat
+        vat = self.company_id.partner_id.vat
         ret = False
         if '-' in self.name:
             if self.origin_partner_id:
@@ -424,7 +432,7 @@ class AfipCPE(models.Model):
                 vals = driver.get_data_from_padron_afip()
                 vals.pop('imp_iva_padron',None)
                 vals.pop('imp_ganancias_padron',None)
-                driver.country_id = self.env.user.company_id.country_id
+                driver.country_id = self.company_id.country_id
                 driver.update(vals)
                 driver.name = driver.name.title()
             except:
