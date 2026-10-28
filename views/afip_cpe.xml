@@ -94,8 +94,10 @@
                                 <tree>
                                     <field name="start_date" />
                                     <field name="driver_id" />
-                                    <field name="vehicle_id" />
-                                    <field name="trailer_id" />
+                                    <field name="vehicle"/>
+                                    <field name="vehicle_id" optional="hide"/>
+                                    <field name="trailer"/>
+                                    <field name="trailer_id" optional="hide"/>
                                     <field name="distance" />
                                     <field name="price" />
 

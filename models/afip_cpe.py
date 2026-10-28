@@ -21,9 +21,10 @@ class AfipCPETransport(models.Model):
     
     partner_id = fields.Many2one('res.partner',_("Transport Company"),domain="[('tms_location','=',False), ('is_company','=',True)]")
     customer_id = fields.Many2one("res.partner", _("Customer"), domain="[('tms_location','=',False), ('is_company','=',True)]")
-    
     driver_id = fields.Many2one('res.partner', _("Driver"))
+    vehicle = fields.Char()
     vehicle_id = fields.Many2one('fleet.vehicle',_("Vehicle"))
+    trailer = fields.Char()
     trailer_id = fields.Many2one("fleet.vehicle",_("Trailer"))
     
     start_date = fields.Datetime(_("Start Date"))
@@ -199,15 +200,14 @@ class AfipCPE(models.Model):
         for record in self:
             record.drivers = ','.join( record.transport_ids.mapped('driver_id.name'))
     
-    @api.depends('transport_ids','transport_ids.driver_id')
+    @api.depends('transport_ids.driver_id','transport_ids.vehicle','transport_ids.trailer')
     def _compute_licenses(self):
         for record in self:
-            l = []
-            for x in record.transport_ids:
-                l.append(x.vehicle_id.license_plate or '')
-                l.append(x.trailer_id.license_plate or '')
-            record.license_plates = ','.join(l)
-    
+            vehicles = record.transport_ids.mapped('vehicle')
+            trailers = record.transport_ids.mapped('trailer')
+            licenses = set(vehicles + trailers) - {False, ''}
+            record.license_plates = ', '.join(licenses)
+
     @api.depends('transport_ids')
     def _compute_customer_id(self):
         for record in self:
@@ -257,23 +257,17 @@ class AfipCPE(models.Model):
             print(ET.tostring(t))
             dominios = [x.text for x in t.findall("dominio")]
             print(dominios)
-            vehicle = self._get_vehicle(dominios[0])
-            trailer = self._get_vehicle(dominios[1], trailer=True) if len(dominios) > 1 else None
+            vehicle = dominios[0]
+            trailer = dominios[1] if len(dominios) > 1 else None
             driver = self._get_driver(t.find('cuitChofer').text)
             print("vehicles",vehicle,trailer,driver)
-            if vehicle and not vehicle.trailer_id and trailer and not trailer.truck_id:
-                vehicle.trailer_id = trailer
-            if vehicle and driver:
-                if driver and not driver.vehicle_id and vehicle and not vehicle.driver_id:
-                    driver.vehicle_id = vehicle
-            
             vals = {
                 'cpe_id': cpe.id,
                 'partner_id': self._get_partner(t.find('cuitTransportista').text).id,
                 'customer_id': self._get_partner(t.find('cuitPagadorFlete').text).id,
                 'driver_id': driver.id,
-                'vehicle_id': vehicle.id,
-                'trailer_id': trailer.id if trailer else None,
+                'vehicle': vehicle,
+                'trailer': trailer,
                 'start_date': self._localize_datetime(t.find("fechaHoraPartida").text),
                 'distance': t.find("kmRecorrer").text,
                 'fumigated_goods': t.find("mercaderiaFumigada").text
