@@ -15,13 +15,14 @@ Soporte de Cartas de porte via el WS de ARCA (ex AFIP)
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     "category": "Localization/Argentina",
-    'version': '17.0.0.5',
+    'version': '17.0.0.5.0',
 
     # any module necessary for this one to work correctly
     'depends': ["base","l10n_ar_afipws","l10n_ar"],
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/cpe_security.xml',
         'views/afip_cpe.xml',
         'views/afip_cpe_transport.xml',
         'views/res_partner.xml',

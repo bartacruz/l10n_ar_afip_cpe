@@ -106,7 +106,7 @@ class AfipCPE(models.Model):
     pdf3 = fields.Many2one('ir.attachment')
     
     drivers = fields.Char(readonly=True,compute='_compute_drivers', store=True, copy=False)
-    license_plates = fields.Char(readonly=True,compute='_compute_licenses')
+    license_plates = fields.Char(readonly=True,compute='_compute_licenses', store=True)
     participants_ids = fields.Many2many('res.partner',compute='_compute_participants', store=True)
     afip_xml_response = fields.Text(
         string="AFIP XML Response",
@@ -199,7 +199,7 @@ class AfipCPE(models.Model):
         for record in self:
             record.drivers = ','.join( record.transport_ids.mapped('driver_id.name'))
     
-    @api.depends('transport_ids')
+    @api.depends('transport_ids','transport_ids.driver_id')
     def _compute_licenses(self):
         for record in self:
             l = []
